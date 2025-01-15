@@ -1,3 +1,23 @@
+## RubyInstaller-3.3.6-2 - 2024-11-09
+
+### Changed
+- [Fix regression](https://github.com/oneclick/rubyinstaller2/commit/978e145d89b51c671c4f4cab07ebfabe0ac158c8) of handling command line arguments with characters outside of the current code page.
+  In this case RubyInstaller-3.3.6-1 failed with:
+  `command line contains characters that are not supported in the active code page`
+  Fixes [bundler#8221](https://github.com/rubygems/rubygems/pull/8221)
+- Fix automatic pacman package install when using bundler-2.5.x. [#396](https://github.com/oneclick/rubyinstaller2/issues/396)
+
+
+## RubyInstaller-3.3.6-1 - 2024-11-07
+
+### Changed
+- Update to ruby-3.3.6, see [release notes](https://www.ruby-lang.org/en/news/2024/11/05/ruby-3-3-6-released/).
+- Update the SSL CA certificate list.
+- Update to OpenSSL-3.4.0. The Ruby API dosn't change.
+- Avoid early load of etc.so allowing updates of etc.gem. [#388](https://github.com/oneclick/rubyinstaller2/issues/388)
+- Set a single key in gemrc to allow appending to this file. [#388](https://github.com/oneclick/rubyinstaller2/issues/388#issuecomment-2348393612)
+
+
 ## RubyInstaller-3.3.5-1 - 2024-09-05
 
 ### Changed

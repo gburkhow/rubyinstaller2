@@ -11,25 +11,35 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - target_ruby: "3.3.5"
+        - target_ruby: "3.4.1"
           arch: "x86-msvcrt"
           build_ruby: "3.1.6/x64"
-          run_mri_spec: v3_3_3
+          run_mri_spec: v3_4_1
 
-        - target_ruby: "3.3.5"
+        - target_ruby: "3.4.1"
           arch: "x64-ucrt"
           build_ruby: "3.1.6/x64"
-          run_mri_spec: v3_3_3
+          run_mri_spec: v3_4_1
 
-        - target_ruby: "3.2.5"
+        - target_ruby: "3.3.6"
           arch: "x86-msvcrt"
           build_ruby: "3.1.6/x64"
-          run_mri_spec: v3_2_4
+          run_mri_spec: v3_3_6
 
-        - target_ruby: "3.2.5"
+        - target_ruby: "3.3.6"
           arch: "x64-ucrt"
           build_ruby: "3.1.6/x64"
-          run_mri_spec: v3_2_4
+          run_mri_spec: v3_3_6
+
+        - target_ruby: "3.2.6"
+          arch: "x86-msvcrt"
+          build_ruby: "3.1.6/x64"
+          run_mri_spec: v3_2_6
+
+        - target_ruby: "3.2.6"
+          arch: "x64-ucrt"
+          build_ruby: "3.1.6/x64"
+          run_mri_spec: v3_2_6
 
         - target_ruby: "3.1.6"
           arch: "x86-msvcrt"
@@ -40,16 +50,6 @@ jobs:
           arch: "x64-ucrt"
           build_ruby: "3.0.7/x64"
           run_mri_spec: v3_1_6
-
-        - target_ruby: "3.0.7"
-          arch: "x86-msvcrt"
-          build_ruby: "3.1.6/x64"
-          run_mri_spec: v3_0_7
-
-        - target_ruby: "3.0.7"
-          arch: "x64-msvcrt"
-          build_ruby: "3.1.6/x64"
-          run_mri_spec: v3_0_7
 
         - target_ruby: "head"
           arch: "x64-ucrt"
@@ -75,7 +75,7 @@ jobs:
         git config --system core.autocrlf false
         git config --system core.eol lf
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     # Work around issue https://github.com/actions/checkout/issues/290
     - name: fetch tag annotations
@@ -146,9 +146,9 @@ jobs:
       run: rake ri-msys:ruby-%target_ruby%-%arch%:installer-inno
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: installer packages
+        name: installer-${{ matrix.target_ruby }}-${{ matrix.arch }}
         path: |
           packages/ri/recipes/archive-7z/*.7z
           packages/ri/recipes/installer-inno/*.exe
@@ -201,7 +201,9 @@ jobs:
 
     - name: Run all tests against the new installed Ruby
       shell: cmd
-      run: ridk exec rake test
+      run: |
+        chcp 437
+        ridk exec rake test
 
     - name: Run upload to github (only on tag builds)
       shell: cmd

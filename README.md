@@ -104,13 +104,14 @@ Check the [wiki on how to use](https://github.com/oneclick/rubyinstaller2/wiki/F
 - The last command lists all available RubyInstaller build targets.
   The build targets consists of the following parts:
   ```
-    rake ri:ruby-3.0.5-x86-msvcrt:archive-7z
+    rake ri:ruby-3.4.1-x86-msvcrt:archive-7z
           ^      ^      ^    ^        ^- "archive-7z"     => 7z archive of the rubyinstaller files
           |      |      |    |           "installer-inno" => executable installer file
           |      |      |    '------- "msvcrt" => older type of C standard library
           |      |      |             "ucrt"   => new type of C standard library
-          |      |      '------- "x86" => 32 bit ruby and MSYS2 version
-          |      |               "x64" => 64 bit version
+          |      |      '------- "x86" => 32 bit x86 ruby and MSYS2 version
+          |      |               "x64" => 64 bit x86_64 version
+          |      |               "arm" => ARM64 version
           |      '------ "x.x.x" => ruby version to build
           |              "head"  => latest development snapshot of ruby
           '------ "ri"      => RubyInstaller without Devkit
