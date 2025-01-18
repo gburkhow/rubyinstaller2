@@ -38,7 +38,7 @@ Gem.pre_install do |gem_installer|
 
   RubyInstaller::Runtime.enable_msys_apps(for_gem_install: true) unless gem_installer.spec.extensions.empty?
 
-  if !gem_installer.options || !gem_installer.options[:ignore_dependencies] || gem_installer.options[:bundler_expected_checksum]
+  if !gem_installer.options || !gem_installer.options[:ignore_dependencies] || gem_installer.class.to_s.include?("Bundler")
     [['msys2_dependencies'      , :install_packages      ],
      ['msys2_mingw_dependencies', :install_mingw_packages]].each do |metakey, func|
 
@@ -54,8 +54,8 @@ Gem.pre_install do |gem_installer|
 end
 
 begin
-  config_fname = Gem::ConfigFile::SYSTEM_WIDE_CONFIG_FILE
-  unless File.exist?(config_fname)
+  config_dir = ENV['ProgramData']
+  if config_dir && !File.exist?(config_fname = File.join(config_dir, "gemrc"))
     File.open(config_fname, File::CREAT | File::EXCL | File::WRONLY) do |fd|
       fd.write <<-EOT
 # This is the system wide config file for Rubygems.
@@ -65,7 +65,7 @@ begin
 # But do not delete this file as otherwise it could be hijacked by
 # another user in a multi-user environment.
 ---
-{}
+verbose: false
       EOT
     end
   end
